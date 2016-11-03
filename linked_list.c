@@ -23,7 +23,12 @@ node * newNode(int val) {
 void printList(node * head) {
 	node * current = head;
 	while (current != NULL) {
-		printf("%d\n", current->val);
+		printf("%d", current->val);
+		if (current->next == NULL) {
+			printf("\n");
+		} else {
+			printf(" -> ");
+		}
 		current = current->next;
 	}
 }
