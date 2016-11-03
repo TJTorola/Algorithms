@@ -1,25 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
-	int val;
-	struct node * next;
-} node;
-
 void printList(node * head);
 node * push(node * head, int val);
 node * pop(node * head);
 node * newNode(int val);
-int aliquotSum(int num);
-node * aliquotSequence(int base, int n);
-int last(node * head);
+int lastVal(node * head);
 
-int main() {
-	node * head = aliquotSequence(12, 8);
-
-	printList(head);
-	return 0;
-}
+typedef struct node {
+	int val;
+	struct node * next;
+} node;
 
 node * newNode(int val) {
 	node * newNode = malloc(sizeof(node));
@@ -86,7 +77,7 @@ int aliquotSum(int num) {
 	return sum;
 }
 
-int last(node * head) {
+int lastVal(node * head) {
 	node * current = head;
 	int last = 0;
 
@@ -103,7 +94,7 @@ node * aliquotSequence(int base, int n) {
 
 	int i = 1;
 	while (i < n) {
-		unshift(head, aliquotSum(last(head)));
+		unshift(head, aliquotSum(lastVal(head)));
 		i++;
 	}
 
