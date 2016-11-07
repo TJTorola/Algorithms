@@ -13,6 +13,8 @@ class Array {
 			print();
 		};
 
+		int get(int);
+		void set(int, int);
 		void push(int);
 		int pop();
 		void unshift(int);
@@ -22,6 +24,8 @@ class Array {
 		int length;
 	private:
 		void doubleCapacity();
+		int addr(int);
+		void shiftStartIdx(int);
 		int capacity, startIdx;
 		int *data;
 };
@@ -31,10 +35,12 @@ int main() {
 	a.push(3);
 	a.push(4);
 	a.push(5);
+	a.shift();
 	a.push(36);
 	a.push(13);
 	a.pop();
 	a.push(-2);
+	a.unshift(100);
 	return 0;
 }
 
@@ -44,7 +50,7 @@ void Array::doubleCapacity() {
 
 	int i = 0;
 	while (i < length) {
-		newData[i] = data[i];
+		newData[i] = get(i);
 		i++;
 	}
 
@@ -53,33 +59,65 @@ void Array::doubleCapacity() {
 	capacity *= 2;
 }
 
+int Array::addr(int idx) {
+	return (startIdx + idx) % capacity;
+}
+
+void Array::shiftStartIdx(int delta) {
+	startIdx = (startIdx + delta) % capacity;
+	if (startIdx < 0) { startIdx += capacity; }
+}
+
+int Array::get(int idx) {
+	return data[addr(idx)];
+}
+
+void Array::set(int idx, int val) {
+	data[addr(idx)] = val;
+}
+
 void Array::push(int val) {
 	cout << "PUSH " << val << "\n";
 	if (length == capacity) {
 		doubleCapacity();
 	}
 
-	data[length++] = val;
+	set(length++, val);
 	print();
 }
 
 int Array::pop() {
-	int val = data[--length];
+	int val = get(--length); // here
 	cout << "POP " << val << "\n";
 	print();
 	return val;
 }
 
 void Array::unshift(int val) {
+	cout << "UNSHIFT " << val << "\n";
+	if (length == capacity) {
+		doubleCapacity();
+	}
 
+	shiftStartIdx(-1);
+	set(0, val);
+	length++;
+	print();
 }
 
 int Array::shift() {
-	return 0;
+	int val = get(0);
+	cout << "SHIFT " << val << "\n";
+
+	shiftStartIdx(1);
+	length--;
+
+	print();
+	return val;
 }
 
 bool Array::empty() {
-	return true;
+	return (length == 0);
 }
 
 void Array::print() {
@@ -87,7 +125,7 @@ void Array::print() {
 
 	cout << "[";
 	while (i < length) {
-		cout << data[i];
+		cout << get(i);
 
 		if (i++ != length - 1) {
 			printf(", ");
