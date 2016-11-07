@@ -8,6 +8,9 @@ class Array {
 			length = 0;
 			startIdx = 0;
 			data = new int[capacity];
+
+			cout << "INIT\n";
+			print();
 		};
 
 		void push(int);
@@ -30,12 +33,13 @@ int main() {
 	a.push(5);
 	a.push(36);
 	a.push(13);
+	a.pop();
 	a.push(-2);
-	a.print();
 	return 0;
 }
 
 void Array::doubleCapacity() {
+	cout << "DOUBLE\n";
 	int *newData = new int[capacity * 2];
 
 	int i = 0;
@@ -50,15 +54,19 @@ void Array::doubleCapacity() {
 }
 
 void Array::push(int val) {
+	cout << "PUSH " << val << "\n";
 	if (length == capacity) {
 		doubleCapacity();
 	}
 
 	data[length++] = val;
+	print();
 }
 
 int Array::pop() {
-	int val = data[length--];
+	int val = data[--length];
+	cout << "POP " << val << "\n";
+	print();
 	return val;
 }
 
@@ -86,4 +94,7 @@ void Array::print() {
 		}
 	}
 	cout << "]\n";
+	cout << "length   : " << length << "\n";
+	cout << "capacity : " << capacity << "\n";
+	cout << "startIdx : " << startIdx << "\n\n";
 }
