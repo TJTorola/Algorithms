@@ -24,6 +24,7 @@ class Array {
 		int length;
 	private:
 		void doubleCapacity();
+		void halveCapacity();
 		int addr(int);
 		void shiftStartIdx(int);
 		int capacity, startIdx;
@@ -41,6 +42,15 @@ int main() {
 	a.pop();
 	a.push(-2);
 	a.unshift(100);
+	a.unshift(0);
+	a.pop();
+	a.shift();
+	a.shift();
+	a.shift();
+	a.pop();
+	a.pop();
+
+	cout << "EMPTY? " << a.empty() << "\n";
 	return 0;
 }
 
@@ -57,6 +67,23 @@ void Array::doubleCapacity() {
 	delete data;
 	data = newData;
 	capacity *= 2;
+	startIdx = 0;
+}
+
+void Array::halveCapacity() {
+	cout << "HALVE\n";
+	int *newData = new int[capacity / 2];
+
+	int i = 0;
+	while (i < length) {
+		newData[i] = get(i);
+		i++;
+	}
+
+	delete data;
+	data = newData;
+	capacity /= 2;
+	startIdx = 0;
 }
 
 int Array::addr(int idx) {
@@ -87,8 +114,13 @@ void Array::push(int val) {
 }
 
 int Array::pop() {
-	int val = get(--length); // here
+	int val = get(--length);
 	cout << "POP " << val << "\n";
+
+	if (length <= capacity / 4) {
+		halveCapacity();
+	}
+
 	print();
 	return val;
 }
@@ -111,6 +143,10 @@ int Array::shift() {
 
 	shiftStartIdx(1);
 	length--;
+
+	if (length <= capacity / 4) {
+		halveCapacity();
+	}
 
 	print();
 	return val;
