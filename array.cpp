@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 class Array {
@@ -17,8 +19,10 @@ class Array {
 		void unshift(int);
 		int shift();
 		bool empty();
-		void print();
+		void print(bool);
 		int length;
+		void shuffle();
+		void swap(int, int);
 	private:
 		void doubleCapacity();
 		void halveCapacity();
@@ -120,7 +124,25 @@ bool Array::empty() {
 	return (length == 0);
 }
 
-void Array::print() {
+void Array::shuffle() {
+	srand(time(NULL));
+
+	int i = 1;
+	int randIdx;
+	while(i < length) {
+		randIdx = rand() % (i + 1);
+		swap(i, randIdx);
+		i++;
+	}
+}
+
+void Array::swap(int left, int right) {
+	int saved = get(left);
+	set(left, get(right));
+	set(right, saved);
+}
+
+void Array::print(bool metaInfo = false) {
 	int i = 0;
 
 	cout << "[";
@@ -132,7 +154,10 @@ void Array::print() {
 		}
 	}
 	cout << "]\n";
-	cout << "length   : " << length << "\n";
-	cout << "capacity : " << capacity << "\n";
-	cout << "startIdx : " << startIdx << "\n\n";
+
+	if (metaInfo) {
+		cout << "length   : " << length << "\n";
+		cout << "capacity : " << capacity << "\n";
+		cout << "startIdx : " << startIdx << "\n\n";
+	}
 }
