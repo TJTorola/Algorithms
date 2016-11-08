@@ -7,19 +7,19 @@ void shellSort(Array arr);
 
 int main() {
 	Array a;
-	int i = 0;
-	while (i < 10) {
-		a.push(i);
-		a.push(i);
-		a.push(i);
-		a.push(i);
+	int i = 10;
+	while (i < 50) {
 		a.push(i);
 		i++;
 	}
 
 	a.shuffle();
 	shellSort(a);
-	a.print();
+	a.print(true);
+
+	a.shuffle();
+	selectionSort(a);
+	a.print(true);
 
 	return 0;
 }
